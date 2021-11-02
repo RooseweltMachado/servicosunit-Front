@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:servicosunit/logics/listagem_controller.dart';
+import 'package:servicosunit/models/solicitacao_model.dart';
+import 'package:servicosunit/repositories/solicitacao_repository.dart';
 import 'package:servicosunit/widgets/textfield_custom.dart';
 
 class ListagemPage extends StatefulWidget {
@@ -13,27 +15,30 @@ class ListagemPage extends StatefulWidget {
 
 class _ListagemPageState extends State<ListagemPage> {
   late ListagemController _controller;
-  List<SolicitacaoModel> lista = [
-    SolicitacaoModel(
-        nome: "Roosewelt",
-        atividade: "Programação",
-        qtdHoras: "40",
-        status: "Homologado"),
-    SolicitacaoModel(
-        nome: "Qaaa",
-        atividade: "Q.A",
-        qtdHoras: "30",
-        status: "Não homologado"),
-    SolicitacaoModel(
-        nome: "Roosewelt Machado de França",
-        atividade: "Scrum",
-        qtdHoras: "30",
-        status: "Não homologado"),
-  ];
-
+  late SolicitacaoRepository repository;
+  // List<SolicitacaoModel> lista = [
+  //   SolicitacaoModel(
+  //       nome: "Roosewelt",
+  //       atividade: "Programação",
+  //       qtdHoras: "40",
+  //       status: "Homologado"),
+  //   SolicitacaoModel(
+  //       nome: "Qaaa",
+  //       atividade: "Q.A",
+  //       qtdHoras: "30",
+  //       status: "Não homologado"),
+  //   SolicitacaoModel(
+  //       nome: "Roosewelt Machado de França",
+  //       atividade: "Scrum",
+  //       qtdHoras: "30",
+  //       status: "Não homologado"),
+  // ];
+  Future<List<SolicitacaoModel>>? solicataoFuture;
   @override
   void initState() {
+    repository = SolicitacaoRepository();
     _controller = ListagemController();
+    solicataoFuture = repository.findAll();
   }
 
   @override
@@ -55,17 +60,17 @@ class _ListagemPageState extends State<ListagemPage> {
                       onPressed: () {
                         print("pesquisaaaaa");
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.search,
                         color: Colors.grey,
                       ),
                     ),
                     controller: _controller.txtPesquisa,
                     labelText: "Pesquisar por nome"),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Align(
+                const Align(
                   alignment: Alignment.topLeft,
                   child: Text(
                     "Lista de solicitações:",
@@ -75,12 +80,12 @@ class _ListagemPageState extends State<ListagemPage> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Text(
+                const Text(
                     "Clique no item para abrir o detalhamento, arraste o card para o lado esquerdo para a opção de abrir o arquivo ou para o lado direito e obtenha as opções de aceitar e recusar o pedido."),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Container(
@@ -89,7 +94,7 @@ class _ListagemPageState extends State<ListagemPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
-                          child: Text(
+                          child: const Text(
                         "Nome",
                         style: TextStyle(
                             color: Colors.black,
@@ -97,7 +102,7 @@ class _ListagemPageState extends State<ListagemPage> {
                             fontWeight: FontWeight.bold),
                       )),
                       Container(
-                          child: Text(
+                          child: const Text(
                         "Atividade",
                         style: TextStyle(
                             color: Colors.black,
@@ -105,7 +110,7 @@ class _ListagemPageState extends State<ListagemPage> {
                             fontWeight: FontWeight.bold),
                       )),
                       Container(
-                          child: Text(
+                          child: const Text(
                         "Horas",
                         style: TextStyle(
                             color: Colors.black,
@@ -113,7 +118,7 @@ class _ListagemPageState extends State<ListagemPage> {
                             fontWeight: FontWeight.bold),
                       )),
                       Container(
-                          child: Text(
+                          child: const Text(
                         "Status",
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -124,23 +129,63 @@ class _ListagemPageState extends State<ListagemPage> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 7,
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.6,
-                  width: MediaQuery.of(context).size.width,
-                  child: ListView.builder(
-                      itemCount: lista.length,
-                      itemBuilder: (context, index) {
-                        String nome = lista[index].nome ?? "";
-                        String atividade = lista[index].atividade ?? "";
-                        String qtdHoras = lista[index].qtdHoras ?? "";
-                        String status = lista[index].status ?? "";
-                        return _buildCard(
-                            nome, atividade, qtdHoras, status, index);
+                Expanded(
+                  child: FutureBuilder(
+                      future: this.solicataoFuture,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<SolicitacaoModel>> snapshot) {
+                        if (!snapshot.hasData) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Column(
+                            children: const [
+                              Icon(
+                                Icons.error_outline,
+                                color: Colors.red,
+                              ),
+                              Text("Erro}")
+                            ],
+                          );
+                        } else {
+                          return ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (_, index) {
+                                String nome =
+                                    snapshot.data![index].nomeCurso.toString();
+                                String atividade = snapshot
+                                    .data![index].dataTermino
+                                    .toString();
+                                String qtdHoras =
+                                    snapshot.data![index].qtdHoras.toString();
+                                String status =
+                                    snapshot.data![index].homolog == true
+                                        ? "Homologado"
+                                        : "Não omologado";
+                                return _buildCard(
+                                    nome, atividade, qtdHoras, status, index);
+                              });
+                        }
                       }),
                 )
+                // Container(
+                //   height: MediaQuery.of(context).size.height * 0.6,
+                //   width: MediaQuery.of(context).size.width,
+                //   child: ListView.builder(
+                //       itemCount: lista.length,
+                //       itemBuilder: (context, index) {
+                //         String nome = lista[index].nome ?? "";
+                //         String atividade = lista[index].atividade ?? "";
+                //         String qtdHoras = lista[index].qtdHoras ?? "";
+                //         String status = lista[index].status ?? "";
+                //         return _buildCard(
+                //             nome, atividade, qtdHoras, status, index);
+                //       }),
+                // )
               ],
             ),
           ),
@@ -162,7 +207,7 @@ class _ListagemPageState extends State<ListagemPage> {
           icon: Icons.archive_outlined,
         ),
       ],
-      actions: <Widget>[
+      actions: const <Widget>[
         IconSlideAction(
           caption: 'Aceitar',
           color: Colors.blue,
@@ -190,21 +235,24 @@ class _ListagemPageState extends State<ListagemPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Row(
-                            children: [Text("Nome: "), Text(nome)],
+                            children: const [Text("Nome: "), Text("nome")],
                           ),
                           Row(
-                            children: [Text("Atividade: "), Text(atividade)],
+                            children: const [
+                              Text("Atividade: "),
+                              Text("atividade")
+                            ],
                           ),
                           Row(
                             children: [
-                              Text("Quantidade de horas: "),
+                              const Text("Quantidade de horas: "),
                               Text(qtdHoras)
                             ],
                           ),
                           Row(
                             children: [Text("Status: "), Text(status)],
                           ),
-                          Align(
+                          const Align(
                               alignment: Alignment.bottomCenter,
                               child: Text(
                                 "Clica fora para fechar ",
@@ -235,7 +283,7 @@ class _ListagemPageState extends State<ListagemPage> {
                   )),
               Container(
                 width: 1,
-                color: Color.fromARGB(255, 35, 78, 152),
+                color: const Color.fromARGB(255, 35, 78, 152),
               ),
               Container(
                   width: MediaQuery.of(context).size.width * 0.27,
@@ -245,14 +293,14 @@ class _ListagemPageState extends State<ListagemPage> {
                   )),
               Container(
                 width: 1,
-                color: Color.fromARGB(255, 35, 78, 152),
+                color: const Color.fromARGB(255, 35, 78, 152),
               ),
               Container(
                   width: MediaQuery.of(context).size.width * 0.15,
                   child: Text(qtdHoras)),
               Container(
                 width: 1,
-                color: Color.fromARGB(255, 35, 78, 152),
+                color: const Color.fromARGB(255, 35, 78, 152),
               ),
               Container(
                   width: MediaQuery.of(context).size.width * 0.25,
@@ -266,13 +314,4 @@ class _ListagemPageState extends State<ListagemPage> {
       ),
     );
   }
-}
-
-class SolicitacaoModel {
-  final String? nome;
-  final String? atividade;
-  final String? qtdHoras;
-  final String? status;
-
-  SolicitacaoModel({this.nome, this.atividade, this.qtdHoras, this.status});
 }
