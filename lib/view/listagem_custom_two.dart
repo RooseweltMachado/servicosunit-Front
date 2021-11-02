@@ -9,26 +9,27 @@ class Concept2List extends StatefulWidget {
 class _Concept2ListState extends State<Concept2List> {
   @override
   Widget build(BuildContext context) {
-    ///
-    /// To measure the height of the device size
-    ///
     double _height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 35, 78, 152),
         elevation: 0.0,
         centerTitle: true,
-        title: Text(
-          "Concept 2 List",
+        title: const Text(
+          "Listagem Customizada2",
           style: TextStyle(fontFamily: "Sofia"),
         ),
       ),
       body: ListView(
         children: <Widget>[
-          card("assets/images/twitchLogo.png", "Twitch", "12/11/2019"),
-          card("assets/images/solariaLogo.jpg", "Solaria", "02/06/2019"),
-          card("assets/images/slackLogo.png", "Slack", "12/10/2019"),
-          SizedBox(
+          card(
+              "https://tm.ibxk.com.br/2018/10/31/31160855392236.jpg?ims=1120x420",
+              "Twitch",
+              "12/11/2019"),
+          card("", "Solaria", "02/06/2019"),
+          card("", "Slack", "12/10/2019"),
+          const SizedBox(
             height: 10.0,
           )
         ],
@@ -48,7 +49,7 @@ class _Concept2ListState extends State<Concept2List> {
                 Container(
                   height: 100.0,
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       color: Colors.white,
                       boxShadow: [
@@ -66,7 +67,7 @@ class _Concept2ListState extends State<Concept2List> {
                       children: <Widget>[
                         Text(
                           title,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w800,
                               fontFamily: "Sans",
@@ -74,7 +75,7 @@ class _Concept2ListState extends State<Concept2List> {
                         ),
                         Text(
                           date,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: "Sans",
                               fontWeight: FontWeight.w400,
                               fontSize: 13.5,
@@ -89,12 +90,12 @@ class _Concept2ListState extends State<Concept2List> {
                   child: Container(
                     height: 27.0,
                     width: 80.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
                             topRight: Radius.circular(10.0),
                             bottomLeft: Radius.circular(20.0)),
                         color: Color(0xFF4A00E0)),
-                    child: Center(
+                    child: const Center(
                       child: Text("   20%",
                           style: TextStyle(
                             color: Colors.white,
@@ -113,8 +114,8 @@ class _Concept2ListState extends State<Concept2List> {
               width: 100.0,
               decoration: BoxDecoration(
                 color: Colors.black,
-                image:
-                    DecorationImage(image: AssetImage(img), fit: BoxFit.cover),
+                image: DecorationImage(
+                    image: NetworkImage(img), fit: BoxFit.cover),
                 boxShadow: [
                   BoxShadow(
                       blurRadius: 8.0,

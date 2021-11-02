@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:servicosunit/view/listagem_custom.dart';
+import 'package:servicosunit/view/listagem_custom_two.dart';
 
 import 'dart:ui' as ui;
 
@@ -19,36 +21,64 @@ class _HomeSecretariaPageState extends State<HomeSecretariaPage> {
         child: Stack(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 60.0),
+              padding: const EdgeInsets.only(top: 60.0),
               child: Column(
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     height: 15.0,
                   ),
                   InkWell(
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => ListagemPage(),
+                            builder: (context) => const ListagemPage(),
                           ),
                         );
                       },
                       child: _card(
-                        Color.fromARGB(255, 35, 78, 152),
-                        Color(0xFF86A8E7),
-                        Color(0xFF15EDED),
+                        const Color.fromARGB(255, 35, 78, 152),
+                        const Color(0xFF86A8E7),
+                        const Color(0xFF15EDED),
                         "Listagem em Grid(Pedida)",
                       )),
-                  SizedBox(
+                  InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => Concept7List(),
+                          ),
+                        );
+                      },
+                      child: _card(
+                        const Color.fromARGB(255, 35, 78, 152),
+                        const Color(0xFF86A8E7),
+                        const Color(0xFF15EDED),
+                        "Listagem Customizada",
+                      )),
+                  InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => Concept2List(),
+                          ),
+                        );
+                      },
+                      child: _card(
+                        const Color.fromARGB(255, 35, 78, 152),
+                        const Color(0xFF86A8E7),
+                        const Color(0xFF15EDED),
+                        "Listagem Customizada2",
+                      )),
+                  const SizedBox(
                     height: 30.0,
-                  )
+                  ),
                 ],
               ),
             ),
             Container(
               width: double.infinity,
               height: 80.0,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   gradient: LinearGradient(colors: [
                 Color.fromARGB(255, 35, 78, 152),
                 Color.fromARGB(255, 35, 78, 152),
@@ -65,16 +95,16 @@ class _HomeSecretariaPageState extends State<HomeSecretariaPage> {
                         onTap: () {
                           Navigator.of(context).pop();
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.arrow_back,
                           color: Colors.white,
                         ),
                       ),
                     ),
                   ),
-                  Center(
+                  const Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 15.0),
+                      padding: EdgeInsets.only(top: 15.0),
                       child: Text(
                         "Opções de listas",
                         style: TextStyle(
@@ -85,7 +115,7 @@ class _HomeSecretariaPageState extends State<HomeSecretariaPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 40.0,
                   )
                 ],

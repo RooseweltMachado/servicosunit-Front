@@ -14,20 +14,20 @@ class _Concept7ListState extends State<Concept7List> {
       body: SingleChildScrollView(
         child: Stack(
           children: <Widget>[
-            ///
-            /// Create circle buble in header
-            ///
             Container(
               height: 250.0,
               width: 250.0,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 borderRadius:
                     BorderRadius.only(bottomRight: Radius.circular(350.0)),
                 gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     tileMode: TileMode.repeated,
-                    colors: [Color(0xFF15EDED), Color(0xFF029CF5)]),
+                    colors: [
+                      Color.fromARGB(255, 35, 78, 152),
+                      Color(0xFF86A8E7),
+                    ]),
               ),
             ),
             Padding(
@@ -38,15 +38,15 @@ class _Concept7ListState extends State<Concept7List> {
                       onTap: () {
                         Navigator.of(context).pop();
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.arrow_back,
                         color: Colors.white,
                       )),
-                  SizedBox(
+                  const SizedBox(
                     width: 15.0,
                   ),
-                  Text(
-                    "Concept 7 List",
+                  const Text(
+                    "Listagem custom",
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
@@ -56,20 +56,15 @@ class _Concept7ListState extends State<Concept7List> {
                 ],
               ),
             ),
-
-            ///
-            /// Create column for card
-            ///
             Column(
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   height: 140.0,
                 ),
-                _card("2.1 ETH", "ETHEREUM", "42kj213hjkdas23141jkb"),
-                _card("1.3 BTC", "BITCOIN", "42kj213hjkdas23141jkb"),
-                _card("4.2 RPL", "RIPPLE", "42kj213hjkdas23141jkb"),
-                _card("1.1 DSH", "DASH", "42kj213hjkdas23141jkb"),
-                SizedBox(
+                _card("45 hrs", "Roosewelt", "Sistemas de informação"),
+                _card("12 hrs", "Alguem", "Ciência da Computação"),
+                _card("4 hrs", "adv", "Direito"),
+                const SizedBox(
                   height: 30.0,
                 )
               ],
@@ -99,16 +94,16 @@ class _Concept7ListState extends State<Concept7List> {
               height: 140.0,
               width: double.infinity,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                  color: Color(0xFF232D4E),
+                  borderRadius: const BorderRadius.all(Radius.circular(25.0)),
+                  color: const Color(0xFF232D4E),
                   border: Border.all(color: Colors.white10)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20.0, top: 10.0, bottom: 10.0),
+                  const Padding(
+                    padding:
+                        EdgeInsets.only(left: 20.0, top: 10.0, bottom: 10.0),
                     child: Text(
                       "Card",
                       style: TextStyle(
@@ -124,7 +119,7 @@ class _Concept7ListState extends State<Concept7List> {
                     padding: const EdgeInsets.only(top: 20.0, left: 15.0),
                     child: Row(
                       children: <Widget>[
-                        Icon(
+                        const Icon(
                           Icons.wallet_giftcard,
                           color: Colors.white,
                         ),
@@ -136,7 +131,7 @@ class _Concept7ListState extends State<Concept7List> {
                             children: <Widget>[
                               Text(
                                 title,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.white,
                                     fontFamily: "Popins",
                                     fontWeight: FontWeight.w200,
@@ -145,7 +140,7 @@ class _Concept7ListState extends State<Concept7List> {
                               ),
                               Text(
                                 code,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontFamily: "Sans",
                                     fontWeight: FontWeight.w300,
                                     letterSpacing: 1.5,
@@ -169,17 +164,20 @@ class _Concept7ListState extends State<Concept7List> {
               child: Container(
                 height: 40.0,
                 width: 130.0,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(30.0)),
                     gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         tileMode: TileMode.repeated,
-                        colors: [Color(0xFF15EDED), Color(0xFF029CF5)])),
+                        colors: [
+                          Color.fromARGB(255, 35, 78, 152),
+                          Color(0xFF86A8E7),
+                        ])),
                 child: Center(
                   child: Text(
                     value,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontFamily: "Sans",
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
