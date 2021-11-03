@@ -14,9 +14,7 @@ class SolicitacaoModel {
       this.qtdHoras,
       this.urlPdf});
 
-  static SolicitacaoModel? fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
-
+  static SolicitacaoModel fromMap(Map<String, dynamic> map) {
     return SolicitacaoModel(
       dataTermino: map['dataTermino'],
       homolog: map['homolog'],

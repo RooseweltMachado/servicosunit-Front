@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:servicosunit/logics/listagem_controller.dart';
@@ -16,29 +17,12 @@ class ListagemPage extends StatefulWidget {
 class _ListagemPageState extends State<ListagemPage> {
   late ListagemController _controller;
   late SolicitacaoRepository repository;
-  // List<SolicitacaoModel> lista = [
-  //   SolicitacaoModel(
-  //       nome: "Roosewelt",
-  //       atividade: "Programação",
-  //       qtdHoras: "40",
-  //       status: "Homologado"),
-  //   SolicitacaoModel(
-  //       nome: "Qaaa",
-  //       atividade: "Q.A",
-  //       qtdHoras: "30",
-  //       status: "Não homologado"),
-  //   SolicitacaoModel(
-  //       nome: "Roosewelt Machado de França",
-  //       atividade: "Scrum",
-  //       qtdHoras: "30",
-  //       status: "Não homologado"),
-  // ];
-  Future<List<SolicitacaoModel>>? solicataoFuture;
+
   @override
   void initState() {
     repository = SolicitacaoRepository();
     _controller = ListagemController();
-    solicataoFuture = repository.findAll();
+    _controller.getSolicita();
   }
 
   @override
@@ -56,6 +40,9 @@ class _ListagemPageState extends State<ListagemPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TextFieldCustom(
+                    onChanged: (v) {
+                      _controller.getPesquisa(v);
+                    },
                     prefixIcon: IconButton(
                       onPressed: () {
                         print("pesquisaaaaa");
@@ -132,60 +119,28 @@ class _ListagemPageState extends State<ListagemPage> {
                 const SizedBox(
                   height: 7,
                 ),
-                Expanded(
-                  child: FutureBuilder(
-                      future: this.solicataoFuture,
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<SolicitacaoModel>> snapshot) {
-                        if (!snapshot.hasData) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Column(
-                            children: const [
-                              Icon(
-                                Icons.error_outline,
-                                color: Colors.red,
-                              ),
-                              Text("Erro}")
-                            ],
-                          );
-                        } else {
-                          return ListView.builder(
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (_, index) {
-                                String nome =
-                                    snapshot.data![index].nomeCurso.toString();
-                                String atividade = snapshot
-                                    .data![index].dataTermino
-                                    .toString();
-                                String qtdHoras =
-                                    snapshot.data![index].qtdHoras.toString();
-                                String status =
-                                    snapshot.data![index].homolog == true
-                                        ? "Homologado"
-                                        : "Não omologado";
-                                return _buildCard(
-                                    nome, atividade, qtdHoras, status, index);
-                              });
-                        }
-                      }),
-                )
-                // Container(
-                //   height: MediaQuery.of(context).size.height * 0.6,
-                //   width: MediaQuery.of(context).size.width,
-                //   child: ListView.builder(
-                //       itemCount: lista.length,
-                //       itemBuilder: (context, index) {
-                //         String nome = lista[index].nome ?? "";
-                //         String atividade = lista[index].atividade ?? "";
-                //         String qtdHoras = lista[index].qtdHoras ?? "";
-                //         String status = lista[index].status ?? "";
-                //         return _buildCard(
-                //             nome, atividade, qtdHoras, status, index);
-                //       }),
-                // )
+                Observer(builder: (_) {
+                  return Container(
+                    height: MediaQuery.of(context).size.height * 0.63,
+                    width: MediaQuery.of(context).size.width,
+                    child: ListView.builder(
+                        itemCount: _controller.listSolicitacao.length,
+                        itemBuilder: (_, index) {
+                          if (_controller.listSolicitacao.isEmpty) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            var item = _controller.listSolicitacao[index];
+                            String? status = item.homolog == true
+                                ? "Homologado"
+                                : "Não Homologado";
+                            return _buildCard(item.nomeCurso, item.dataTermino,
+                                item.qtdHoras.toString(), status, index);
+                          }
+                        }),
+                  );
+                })
               ],
             ),
           ),
@@ -194,8 +149,12 @@ class _ListagemPageState extends State<ListagemPage> {
     );
   }
 
-  _buildCard(String nome, String atividade, String qtdHoras, String status,
+  _buildCard(String? nome, String? atividade, String? qtdHoras, String? status,
       int index) {
+    nome ?? "";
+    atividade ?? "";
+    qtdHoras ?? "";
+    status ?? "";
     double result = index % 2;
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
@@ -246,11 +205,11 @@ class _ListagemPageState extends State<ListagemPage> {
                           Row(
                             children: [
                               const Text("Quantidade de horas: "),
-                              Text(qtdHoras)
+                              Text(qtdHoras!)
                             ],
                           ),
                           Row(
-                            children: [Text("Status: "), Text(status)],
+                            children: [Text("Status: "), Text(status!)],
                           ),
                           const Align(
                               alignment: Alignment.bottomCenter,
@@ -278,7 +237,7 @@ class _ListagemPageState extends State<ListagemPage> {
               Container(
                   width: MediaQuery.of(context).size.width * 0.2,
                   child: Text(
-                    nome,
+                    nome!,
                     overflow: TextOverflow.ellipsis,
                   )),
               Container(
@@ -288,7 +247,7 @@ class _ListagemPageState extends State<ListagemPage> {
               Container(
                   width: MediaQuery.of(context).size.width * 0.27,
                   child: Text(
-                    atividade,
+                    atividade!,
                     overflow: TextOverflow.ellipsis,
                   )),
               Container(
@@ -297,7 +256,7 @@ class _ListagemPageState extends State<ListagemPage> {
               ),
               Container(
                   width: MediaQuery.of(context).size.width * 0.15,
-                  child: Text(qtdHoras)),
+                  child: Text(qtdHoras!)),
               Container(
                 width: 1,
                 color: const Color.fromARGB(255, 35, 78, 152),
@@ -305,7 +264,7 @@ class _ListagemPageState extends State<ListagemPage> {
               Container(
                   width: MediaQuery.of(context).size.width * 0.25,
                   child: Text(
-                    status,
+                    status!,
                     overflow: TextOverflow.visible,
                   )),
             ],

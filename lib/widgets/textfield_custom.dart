@@ -5,12 +5,14 @@ class TextFieldCustom extends StatefulWidget {
   final String? labelText;
   final double? largura;
   final Widget? prefixIcon;
-  const TextFieldCustom(
+  void Function(String)? onChanged;
+  TextFieldCustom(
       {Key? key,
       required this.controller,
       required this.labelText,
       this.largura,
-      this.prefixIcon})
+      this.prefixIcon,
+      this.onChanged})
       : super(key: key);
 
   @override
@@ -24,6 +26,7 @@ class _TextFieldCustomState extends State<TextFieldCustom> {
       width: widget.largura ?? MediaQuery.of(context).size.width * 0.8,
       height: MediaQuery.of(context).size.height * 0.1,
       child: TextField(
+        onChanged: widget.onChanged,
         controller: widget.controller,
         textCapitalization: TextCapitalization.characters,
         decoration: InputDecoration(
