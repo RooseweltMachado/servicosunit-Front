@@ -169,7 +169,7 @@ class _SolicitacaoPageState extends State<SolicitacaoPage> {
                                                                               MaterialPageRoute(builder: (context) => PdfUser(_controller.arquivo!.path)));
                                                                         },
                                                                         icon:
-                                                                            Icon(
+                                                                            const Icon(
                                                                           Icons
                                                                               .remove_red_eye_outlined,
                                                                           color:

@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -5,6 +8,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:servicosunit/logics/listagem_controller.dart';
 import 'package:servicosunit/models/solicitacao_model.dart';
 import 'package:servicosunit/repositories/solicitacao_repository.dart';
+import 'package:servicosunit/view/pdf_screen.dart';
+import 'package:servicosunit/view/pdf_user.dart';
 import 'package:servicosunit/widgets/textfield_custom.dart';
 
 class ListagemPage extends StatefulWidget {
@@ -16,11 +21,9 @@ class ListagemPage extends StatefulWidget {
 
 class _ListagemPageState extends State<ListagemPage> {
   late ListagemController _controller;
-  late SolicitacaoRepository repository;
 
   @override
   void initState() {
-    repository = SolicitacaoRepository();
     _controller = ListagemController();
     _controller.getSolicita();
   }
@@ -135,8 +138,13 @@ class _ListagemPageState extends State<ListagemPage> {
                             String? status = item.homolog == true
                                 ? "Homologado"
                                 : "Não Homologado";
-                            return _buildCard(item.nomeCurso, item.dataTermino,
-                                item.qtdHoras.toString(), status, index);
+                            return _buildCard(
+                                item.nomeCurso,
+                                item.atividade,
+                                item.qtdHoras.toString(),
+                                status,
+                                index,
+                                item.urlPdf);
                           }
                         }),
                   );
@@ -150,11 +158,12 @@ class _ListagemPageState extends State<ListagemPage> {
   }
 
   _buildCard(String? nome, String? atividade, String? qtdHoras, String? status,
-      int index) {
-    nome ?? "";
-    atividade ?? "";
-    qtdHoras ?? "";
-    status ?? "";
+      int index, String? url) {
+    url = url ?? "";
+    nome = nome ?? "";
+    atividade = atividade ?? "";
+    qtdHoras = qtdHoras ?? "";
+    status = status ?? "";
     double result = index % 2;
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
@@ -164,6 +173,22 @@ class _ListagemPageState extends State<ListagemPage> {
           caption: 'Abrir',
           color: Colors.yellow[700],
           icon: Icons.archive_outlined,
+          onTap: () async {
+            url = url!.replaceAll('localhost', '10.0.2.2');
+            var pdf = await _controller.getFile(url!);
+            //pdf = pdf.toString();
+            File file = File.fromUri(Uri.file(pdf));
+            //file = file.
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) =>
+            //             PdfUser(file.path.characters.string)));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PDFScreen(path: file.uri.path)));
+          },
         ),
       ],
       actions: const <Widget>[
@@ -237,7 +262,7 @@ class _ListagemPageState extends State<ListagemPage> {
               Container(
                   width: MediaQuery.of(context).size.width * 0.2,
                   child: Text(
-                    nome!,
+                    nome,
                     overflow: TextOverflow.ellipsis,
                   )),
               Container(
@@ -247,7 +272,7 @@ class _ListagemPageState extends State<ListagemPage> {
               Container(
                   width: MediaQuery.of(context).size.width * 0.27,
                   child: Text(
-                    atividade!,
+                    atividade,
                     overflow: TextOverflow.ellipsis,
                   )),
               Container(
@@ -256,7 +281,7 @@ class _ListagemPageState extends State<ListagemPage> {
               ),
               Container(
                   width: MediaQuery.of(context).size.width * 0.15,
-                  child: Text(qtdHoras!)),
+                  child: Text(qtdHoras)),
               Container(
                 width: 1,
                 color: const Color.fromARGB(255, 35, 78, 152),
@@ -264,7 +289,7 @@ class _ListagemPageState extends State<ListagemPage> {
               Container(
                   width: MediaQuery.of(context).size.width * 0.25,
                   child: Text(
-                    status!,
+                    status,
                     overflow: TextOverflow.visible,
                   )),
             ],

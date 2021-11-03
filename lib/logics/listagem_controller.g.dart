@@ -25,6 +25,21 @@ mixin _$ListagemController on _ListagemControllerBase, Store {
     });
   }
 
+  final _$listAlunosAtom = Atom(name: '_ListagemControllerBase.listAlunos');
+
+  @override
+  List<AlunoModel> get listAlunos {
+    _$listAlunosAtom.reportRead();
+    return super.listAlunos;
+  }
+
+  @override
+  set listAlunos(List<AlunoModel> value) {
+    _$listAlunosAtom.reportWrite(value, super.listAlunos, () {
+      super.listAlunos = value;
+    });
+  }
+
   final _$_ListagemControllerBaseActionController =
       ActionController(name: '_ListagemControllerBase');
 
@@ -42,7 +57,8 @@ mixin _$ListagemController on _ListagemControllerBase, Store {
   @override
   String toString() {
     return '''
-listSolicitacao: ${listSolicitacao}
+listSolicitacao: ${listSolicitacao},
+listAlunos: ${listAlunos}
     ''';
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:servicosunit/logics/listagem_controller.dart';
 
 class Concept2List extends StatefulWidget {
   Concept2List({Key? key}) : super(key: key);
@@ -7,37 +9,53 @@ class Concept2List extends StatefulWidget {
 }
 
 class _Concept2ListState extends State<Concept2List> {
+  late ListagemController _controller;
+
+  @override
+  void initState() {
+    _controller = ListagemController();
+    _controller.getAlunos();
+  }
+
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 35, 78, 152),
-        elevation: 0.0,
-        centerTitle: true,
-        title: const Text(
-          "Listagem Customizada2",
-          style: TextStyle(fontFamily: "Sofia"),
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 35, 78, 152),
+          elevation: 0.0,
+          centerTitle: true,
+          title: const Text(
+            "Listagem Customizada2",
+            style: TextStyle(fontFamily: "Sofia"),
+          ),
         ),
-      ),
-      body: ListView(
-        children: <Widget>[
-          card(
-              "https://tm.ibxk.com.br/2018/10/31/31160855392236.jpg?ims=1120x420",
-              "Twitch",
-              "12/11/2019"),
-          card("", "Solaria", "02/06/2019"),
-          card("", "Slack", "12/10/2019"),
-          const SizedBox(
-            height: 10.0,
-          )
-        ],
-      ),
-    );
+        body: Observer(builder: (_) {
+          return Container(
+            child: ListView.builder(
+                itemCount: _controller.listAlunos.length,
+                itemBuilder: (_, index) {
+                  if (_controller.listAlunos.length == 0) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    var item = _controller.listAlunos[index];
+                    String foto = item.fotourl ?? "";
+                    String nome = item.nomeAluno ?? "";
+                    String curso = item.curso ?? "";
+                    double horas = item.quantidadeHoras ?? 0;
+                    foto = foto.replaceAll('localhost', '10.0.2.2');
+                    return card(foto, nome, curso, horas);
+                  }
+                }),
+          );
+        }));
   }
 
-  Widget card(String img, String title, String date) {
+  Widget card(String img, String title, String date, double horas) {
+    String? hrs = horas.toString();
     return Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 19.0),
       child: Stack(
@@ -69,7 +87,7 @@ class _Concept2ListState extends State<Concept2List> {
                           title,
                           style: const TextStyle(
                               color: Colors.black,
-                              fontWeight: FontWeight.w800,
+                              fontWeight: FontWeight.bold,
                               fontFamily: "Sans",
                               fontSize: 16.5),
                         ),
@@ -95,8 +113,8 @@ class _Concept2ListState extends State<Concept2List> {
                             topRight: Radius.circular(10.0),
                             bottomLeft: Radius.circular(20.0)),
                         color: Color(0xFF4A00E0)),
-                    child: const Center(
-                      child: Text("   20%",
+                    child: Center(
+                      child: Text("$hrs hrs",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w800,

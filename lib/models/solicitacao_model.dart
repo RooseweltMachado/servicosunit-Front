@@ -1,5 +1,5 @@
 class SolicitacaoModel {
-  String? dataTermino;
+  String? atividade;
   String? matriculaAluno;
   String? nomeCurso;
   String? urlPdf;
@@ -7,7 +7,7 @@ class SolicitacaoModel {
   double? qtdHoras;
 
   SolicitacaoModel(
-      {this.dataTermino,
+      {this.atividade,
       this.homolog,
       this.matriculaAluno,
       this.nomeCurso,
@@ -16,7 +16,7 @@ class SolicitacaoModel {
 
   static SolicitacaoModel fromMap(Map<String, dynamic> map) {
     return SolicitacaoModel(
-      dataTermino: map['dataTermino'],
+      atividade: map['atividade'],
       homolog: map['homolog'],
       matriculaAluno: map['matriculaAluno'],
       nomeCurso: map['nomeCurso'],
