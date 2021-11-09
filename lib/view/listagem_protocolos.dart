@@ -48,7 +48,11 @@ class _ListagemPageState extends State<ListagemPage> {
                     },
                     prefixIcon: IconButton(
                       onPressed: () {
-                        print("pesquisaaaaa");
+                        if (_controller.txtPesquisa?.text != null &&
+                            _controller.txtPesquisa?.text != "") {
+                          _controller.getPesquisa(
+                              _controller.txtPesquisa!.text.toString());
+                        }
                       },
                       icon: const Icon(
                         Icons.search,
@@ -124,7 +128,7 @@ class _ListagemPageState extends State<ListagemPage> {
                 ),
                 Observer(builder: (_) {
                   return Container(
-                    height: MediaQuery.of(context).size.height * 0.63,
+                    height: MediaQuery.of(context).size.height * 0.6,
                     width: MediaQuery.of(context).size.width,
                     child: ListView.builder(
                         itemCount: _controller.listSolicitacao.length,
@@ -139,6 +143,7 @@ class _ListagemPageState extends State<ListagemPage> {
                                 ? "Homologado"
                                 : "Não Homologado";
                             return _buildCard(
+                                item.id.toString(),
                                 item.nomeCurso,
                                 item.atividade,
                                 item.qtdHoras.toString(),
@@ -157,8 +162,9 @@ class _ListagemPageState extends State<ListagemPage> {
     );
   }
 
-  _buildCard(String? nome, String? atividade, String? qtdHoras, String? status,
-      int index, String? url) {
+  _buildCard(String? id, String? nome, String? atividade, String? qtdHoras,
+      String? status, int index, String? url) {
+    id = id ?? "";
     url = url ?? "";
     nome = nome ?? "";
     atividade = atividade ?? "";
@@ -174,16 +180,19 @@ class _ListagemPageState extends State<ListagemPage> {
           color: Colors.yellow[700],
           icon: Icons.archive_outlined,
           onTap: () async {
+            // url = url!.replaceAll('localhost', '10.0.2.2');
+
+            // var pdf = await _controller.downloadFile(url!, "testeonline");
+
+            // File file = File(pdf);
+
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => PdfUser(file.path)));
             url = url!.replaceAll('localhost', '10.0.2.2');
             var pdf = await _controller.getFile(url!);
-            //pdf = pdf.toString();
+
             File file = File.fromUri(Uri.file(pdf));
-            //file = file.
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) =>
-            //             PdfUser(file.path.characters.string)));
+
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -191,16 +200,22 @@ class _ListagemPageState extends State<ListagemPage> {
           },
         ),
       ],
-      actions: const <Widget>[
+      actions: <Widget>[
         IconSlideAction(
           caption: 'Aceitar',
           color: Colors.blue,
           icon: Icons.done,
+          onTap: () {
+            _controller.validarSolicitacao(id!);
+          },
         ),
         IconSlideAction(
           caption: 'Recusar',
           color: Colors.indigo,
           icon: Icons.close,
+          onTap: () {
+            _controller.deleteSolicacao(id!);
+          },
         ),
       ],
       child: GestureDetector(

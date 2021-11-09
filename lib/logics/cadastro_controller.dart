@@ -11,12 +11,14 @@ class CadastroController = _CadastroControllerBase with _$CadastroController;
 abstract class _CadastroControllerBase with Store {
   TextEditingController? txtMatricula;
   TextEditingController? txtSenha;
+  TextEditingController? txtNome;
   TextEditingController? txtCurso;
   TextEditingController? txtTurno;
 
   _CadastroControllerBase() {
     txtMatricula = TextEditingController();
     txtSenha = TextEditingController();
+    txtNome = TextEditingController();
     txtCurso = TextEditingController();
     txtTurno = TextEditingController();
   }
@@ -40,6 +42,10 @@ abstract class _CadastroControllerBase with Store {
   Future tirarFoto() async {
     imagemTemporaria = await ImagePicker().getImage(source: ImageSource.camera);
     imagem = File(imagemTemporaria!.path);
+  }
+
+  cadastrarAluno() async {
+    Map<String, dynamic> body = {"": 1};
   }
 
   void seletor(BuildContext context) {

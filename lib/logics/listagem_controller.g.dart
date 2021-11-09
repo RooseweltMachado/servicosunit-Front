@@ -44,6 +44,28 @@ mixin _$ListagemController on _ListagemControllerBase, Store {
       ActionController(name: '_ListagemControllerBase');
 
   @override
+  dynamic validarSolicitacao(String id) {
+    final _$actionInfo = _$_ListagemControllerBaseActionController.startAction(
+        name: '_ListagemControllerBase.validarSolicitacao');
+    try {
+      return super.validarSolicitacao(id);
+    } finally {
+      _$_ListagemControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic deleteSolicacao(String id) {
+    final _$actionInfo = _$_ListagemControllerBaseActionController.startAction(
+        name: '_ListagemControllerBase.deleteSolicacao');
+    try {
+      return super.deleteSolicacao(id);
+    } finally {
+      _$_ListagemControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic getPesquisa(String valor) {
     final _$actionInfo = _$_ListagemControllerBaseActionController.startAction(
         name: '_ListagemControllerBase.getPesquisa');

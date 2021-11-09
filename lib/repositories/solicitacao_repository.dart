@@ -26,6 +26,27 @@ class SolicitacaoRepository {
       throw (e.message);
     }
   }
+
+  validarArquivo(String id) async {
+    try {
+      var response =
+          await Dio().get('http://10.0.2.2:8090/solicitacao/validar/$id');
+      print(response);
+    } on DioError catch (e) {
+      throw (e.message);
+    }
+  }
+
+  deleteArquivo(String id) async {
+    try {
+      var response =
+          await Dio().get('http://10.0.2.2:8090/solicitacao/delete/$id');
+      print(response);
+    } on DioError catch (e) {
+      throw (e.message);
+    }
+  }
+
   // Future<File> getFileFromUrl(String url, {name}) async {
   //   var fileName = 'testonline';
   //   if (name != null) {

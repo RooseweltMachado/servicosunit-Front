@@ -40,13 +40,13 @@ class _CadastroPageState extends State<CadastroPage> {
                   "https://play-lh.googleusercontent.com/IpPntxBn6fUB_7SgH3UvCDgzlvcUKwQ9dReYPMJJfIxBuJiz7qCL5wdqHM4yvFLvBA"),
             ),
             Container(
-                height: MediaQuery.of(context).size.height * 0.55,
+                height: MediaQuery.of(context).size.height * 0.6,
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20)),
                 child: Padding(
-                  padding: EdgeInsets.only(top: 45),
+                  padding: EdgeInsets.only(top: 8),
                   child: Column(
                     children: [
                       TextFieldCustom(
@@ -64,6 +64,14 @@ class _CadastroPageState extends State<CadastroPage> {
                         ),
                         controller: controller.txtSenha,
                         labelText: "Senha",
+                      ),
+                      TextFieldCustom(
+                        prefixIcon: Icon(
+                          Icons.person,
+                          color: Color.fromARGB(255, 35, 78, 152),
+                        ),
+                        controller: controller.txtMatricula,
+                        labelText: "Nome",
                       ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,

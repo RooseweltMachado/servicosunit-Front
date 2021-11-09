@@ -1,4 +1,5 @@
 class SolicitacaoModel {
+  int? id;
   String? atividade;
   String? matriculaAluno;
   String? nomeCurso;
@@ -7,7 +8,8 @@ class SolicitacaoModel {
   double? qtdHoras;
 
   SolicitacaoModel(
-      {this.atividade,
+      {this.id,
+      this.atividade,
       this.homolog,
       this.matriculaAluno,
       this.nomeCurso,
@@ -16,6 +18,7 @@ class SolicitacaoModel {
 
   static SolicitacaoModel fromMap(Map<String, dynamic> map) {
     return SolicitacaoModel(
+      id: map['id'],
       atividade: map['atividade'],
       homolog: map['homolog'],
       matriculaAluno: map['matriculaAluno'],
